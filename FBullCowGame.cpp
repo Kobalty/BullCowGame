@@ -1,8 +1,9 @@
+#pragma once
 #include "FBullCowGame.h"
 #include <map>
 #define TMap std::map
 
-#pragma once
+
 using int32 = int;
 
 FBullCowGame::FBullCowGame() { Reset(); }
