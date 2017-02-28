@@ -6,17 +6,23 @@ using int32 = int;
 
 FBullCowGame::FBullCowGame() { Reset(); }
 
-int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
+
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
 bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
 
+int32 FBullCowGame::GetMaxTries() const 
+{
+	TMap <int32, int32> WordLengthToMaxTries = { {3,4},{4,5},{5,6},{6,6},{7,7} };// map of word length and max tries, first int is the word length and the second is the tries for that word length.
+	
+	return WordLengthToMaxTries[MyHiddenWord.length()];// returns an int value based on the int value gotten from MyHiddenWord.length() aka if MyHiddenWord.length() returns a 3 then the returned value from the map is 4 as that corespondes to the key value of 3
+	// remeber maps are paired values!!
+	
+}
 void FBullCowGame::Reset()
 {
-	constexpr int32 MAX_TRIES = 8;
 	const FString HIDDEN_WORD = "nukem";
 
-	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
 	bGameIsWon = false;
@@ -29,7 +35,7 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 	{
 		return EGuessStatus::Not_Isogram;
 	}
-	else if (false) // if the guess isn't all lowercase
+	else if (!IsLowercase(Guess)) // if the guess isn't all lowercase
 	{
 		return EGuessStatus::Not_Lowercase;
 	}
@@ -86,7 +92,7 @@ bool FBullCowGame::IsIsogram(FString Word) const
 {
 	if (Word.length() <= 1) { return true; }; // treats any input with only 1 charcter as an isogram
 
-	TMap <char, bool> LetterSeen;// creates aka declares a map or chars and bools.
+	TMap <char, bool> LetterSeen;// creates aka declares a map of chars and bools.
 
 	for (auto Letter : Word) // for all the Letters in Word. auto means the compiler** defines the type automatically which in this case is a char.
 	{
@@ -97,7 +103,7 @@ bool FBullCowGame::IsIsogram(FString Word) const
 		}
 		else
 		{
-			LetterSeen[Letter] = true; // adds letter to map
+			LetterSeen[Letter] = true; // adds letter to map and assigns its key to true so it would been |W| |true| *maps are kinda similar to multidimensional arrays think boxes of columns and rows.
 		}
 	
 	
@@ -107,4 +113,19 @@ bool FBullCowGame::IsIsogram(FString Word) const
 
 
 	return true;
+}
+
+bool FBullCowGame::IsLowercase(FString guess) const
+{
+	for (auto Letter : guess)// for all the letters in guess aka check each charcter in the string individualy each run through the loop.
+	{
+		if (isupper(Letter))//checks if letter is uppercase
+		{
+			return false;// if isupper returns true aka it found that the letter is uppercase then return false beacuse its NOT lowercase.
+
+		}
+
+	}
+
+	return true;// if no upercase is found return true.
 }

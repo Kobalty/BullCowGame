@@ -44,4 +44,5 @@ private:
 	FString MyHiddenWord;
 	bool bGameIsWon;
 	bool IsIsogram(FString) const;
+	bool IsLowercase(FString) const; //will check guess to see if all chararcters are lowercase.
 };
